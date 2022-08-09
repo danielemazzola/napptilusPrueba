@@ -7,20 +7,20 @@ const Header = () => {
   const { home, product, details } = useClient()
 
   return (
-    <header className="bg-slate-500 px-6 pt-4 w-full">
-      <div className="flex justify-between items-center">
+    <header className="bg-slate-500 px-6 pt-4 w-full flex flex-col">
+      <div className="flex justify-between">
         <div>
           <Link to="./">
-            <div className="flex items-center">
+            <div className="flex">
               <h2 className="font-bold text-xl sm:text-2xl text-white capitalize">
-                Zara Mobile
+                Mobile Shop
               </h2>
+              <img src={carrito2} className="w-8" />
             </div>
           </Link>
         </div>
         <div>
           <img src={carrito} className="w-8" />
-          {/* <img src={carrito2} className="w-8" /> */}
         </div>
       </div>
       <nav className="flex justify-center font-bold mt-5 transition-all">

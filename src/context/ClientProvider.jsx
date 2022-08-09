@@ -24,12 +24,16 @@ const ClientProvider = ({ children }) => {
   // State para mostrar detalles de Productos
   const [viewDetails, setViewDetails] = useState(false)
 
-  // Ubicación URL
-  const location = useLocation()
-  const actual = location.pathname
+  // State de selectores Colores y Capacidad
+  const [color, setColor] = useState({})
+  const [memory, setMemory] = useState({})
 
   // Carrito
   const [contentCar, setContentCar] = useState([])
+
+  // Ubicación URL
+  const location = useLocation()
+  const actual = location.pathname
 
   useEffect(() => {
     if (actual === '/') {
@@ -89,7 +93,11 @@ const ClientProvider = ({ children }) => {
         apiProducts,
 
         productDetail,
-        handleDescription
+        handleDescription,
+        color,
+        setColor,
+        memory,
+        setMemory
       }}
     >
       {children}

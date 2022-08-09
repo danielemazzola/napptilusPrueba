@@ -3,7 +3,6 @@ import { ClientProvider } from './context/ClientProvider'
 import ClientLayout from './layouts/ClientLayout'
 import ProductListPage from './views/ProductListPage'
 import ProductDetailsPage from './views/ProductDetailsPage'
-import ShoppingCart from './views/ShoppingCart'
 
 function App () {
   return (
@@ -13,7 +12,6 @@ function App () {
           <Route path="/" element={<ClientLayout />}>
             <Route index element={<ProductListPage />} />
             <Route path="product/:id" element={<ProductDetailsPage />} />
-            <Route path="cesta-de-compra" element={<ShoppingCart />} />
           </Route>
         </Routes>
       </ClientProvider>

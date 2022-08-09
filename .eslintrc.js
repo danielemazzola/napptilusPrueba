@@ -16,8 +16,7 @@ module.exports = {
     sourceType: 'module'
   },
   plugins: [
-    'react',
-    'preact-react'
+    'react'
   ],
   rules: {
     'no-unused-vars': 'warn',

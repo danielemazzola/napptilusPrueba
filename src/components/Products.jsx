@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 
 const Products = ({ products }) => {
-  const { id, imgUrl, model, price, brand } = products;
+  const { id, imgUrl, model, price, brand } = products
 
   return (
     <div>
@@ -26,7 +26,7 @@ const Products = ({ products }) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Products;
+export default Products

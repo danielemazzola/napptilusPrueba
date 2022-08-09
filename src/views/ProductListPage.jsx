@@ -8,7 +8,7 @@ const ProductListPage = () => {
     <div className="w-full">
       <div className="flex flex-col-reverse sm:flex-row sm:justify-between mr-4 items-center">
         <div className="mx-5 font-bold uppercase text-2xl text-gray-500 mt-5 sm:mt-0">
-          Productos
+          Productos<hr className="border-2 bg-gray-200" />
         </div>
         <div className="w-full flex justify-end">
           <Search />

@@ -11,7 +11,6 @@ const ClientProvider = ({ children }) => {
   // breadcrumbs
   const [home, setHome] = useState(true)
   const [product, setProduct] = useState(false)
-  const [car, setCar] = useState(false)
 
   // Buscador
   const [search, setSearch] = useState('')
@@ -22,10 +21,12 @@ const ClientProvider = ({ children }) => {
   // Almacenar un producto en el State
   const [details, setDetails] = useState({})
 
+  // State para mostrar detalles de Productos
+  const [viewDetails, setViewDetails] = useState(false)
+
   // Ubicación URL
   const location = useLocation()
   const actual = location.pathname
-  // console.log(actual)
 
   // Carrito
   const [contentCar, setContentCar] = useState([])
@@ -34,19 +35,12 @@ const ClientProvider = ({ children }) => {
     if (actual === '/') {
       setHome(true)
       setProduct(false)
-      setCar(false)
     }
-    if (actual === '/product/') {
+    if (actual === `/product/${details.id}`) {
       setHome(false)
       setProduct(true)
-      setCar(false)
     }
-    if (actual === '/cesta-de-compra') {
-      setHome(false)
-      setProduct(false)
-      setCar(true)
-    }
-  }, [location])
+  }, [actual, details])
 
   useEffect(() => {
     // Busqueda de productos en tiempo real
@@ -72,18 +66,21 @@ const ClientProvider = ({ children }) => {
     setCharging(false)
   }
 
+  const handleDescription = () => {
+    setViewDetails(!viewDetails)
+  }
+
   return (
     <ClientContext.Provider
       value={{
         charging,
         setCharging,
+        viewDetails,
 
         home,
         setHome,
         product,
         setProduct,
-        car,
-        setCar,
         details,
 
         search,
@@ -91,7 +88,8 @@ const ClientProvider = ({ children }) => {
 
         apiProducts,
 
-        productDetail
+        productDetail,
+        handleDescription
       }}
     >
       {children}

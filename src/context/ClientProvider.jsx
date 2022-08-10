@@ -122,8 +122,6 @@ const ClientProvider = ({ children }) => {
         search,
         setSearch,
 
-        apiProducts,
-
         productDetail,
         handleDescription,
         addCart,

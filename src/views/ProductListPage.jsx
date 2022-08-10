@@ -3,7 +3,7 @@ import Products from '../components/Products'
 import Search from '../components/Search'
 import Charging from '../components/Charging'
 const ProductListPage = () => {
-  const { apiProducts, charging, result } = useClient()
+  const { charging, result } = useClient()
   return (
     <div className="w-full">
       <div className="flex flex-col-reverse sm:flex-row sm:justify-between mr-4 items-center">

@@ -4,23 +4,30 @@ import carrito from '../img/carrito.png'
 import carrito2 from '../img/carrito2.png'
 
 const Header = () => {
-  const { home, product, details } = useClient()
+  const { home, product, details, contCar } = useClient()
 
   return (
     <header className="bg-slate-500 px-6 pt-4 w-full flex flex-col">
       <div className="flex justify-between">
         <div>
           <Link to="./">
-            <div className="flex">
+            <div>
               <h2 className="font-bold text-xl sm:text-2xl text-white capitalize">
                 Mobile Shop
               </h2>
-              <img src={carrito2} className="w-8" />
             </div>
           </Link>
         </div>
         <div>
-          <img src={carrito} className="w-8" />
+
+          {contCar <= 0
+            ? <img src={carrito} className="w-8" />
+            : <>
+            <img src={carrito2} className="w-8" />
+              <div className="text-center font-bold text-white">{ contCar }</div>
+            </>
+            }
+
         </div>
       </div>
       <nav className="flex justify-center font-bold mt-5 transition-all">

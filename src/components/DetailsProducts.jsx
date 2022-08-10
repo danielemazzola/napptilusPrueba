@@ -1,5 +1,5 @@
-import { useEffect } from 'react'
 import useClient from '../hooks/useClient'
+import Charging from '../components/Charging'
 import mas from '../img/mas.png'
 import menos from '../img/menos.png'
 
@@ -22,36 +22,25 @@ const DetailsProducts = ({ details }) => {
   } = details
 
   const {
+    chargingCar,
     viewDetails,
     handleDescription,
-    color,
-    setColor,
-    memory,
-    setMemory,
+    colorCode,
+    setColorCode,
+    storageCode,
+    setStorageCode,
     addCart
   } = useClient()
-
-  const addColors = options?.colors.map((colores, index) => (
-    <option
-      key={index}
-      value={ colores.code }
-    >{ colores.name }
-    </option>))
-
-  const addMemo = options?.storages.map((memos, index) => (
-  <option
-      key={index}
-      value={ memos.code }
-    >{ memos.name }
-    </option>
-  ))
 
   const x = price * 0.10
   const firstPrice = parseInt(price) + x
 
-  const handleAddCart = (e) => {
-    e.preventDefault(e)
-    addCart({ id, color, memory })
+  const handleAddCart = async (e) => {
+    e.preventDefault()
+    if ([id, colorCode, storageCode].includes('')) {
+      return
+    }
+    await addCart({ id, colorCode, storageCode })
   }
 
   return (
@@ -109,29 +98,40 @@ const DetailsProducts = ({ details }) => {
                       <label>Capacidad: </label>
                         <select
                             className="bg-slate-50 my-2 border mx-2 px-2 py-1 border-black rounded"
-                            value={ memory }
-                            onChange={ (e) => setMemory(e.target.value) }
+                            value={ storageCode }
+                            onChange={ (e) => setStorageCode(e.target.value) }
                         >
-                        { addMemo }
+                        <option>----</option>
+                        { options?.storages.map((memos, index) => (
+                            <option
+                                key={index}
+                                value={ memos.code }
+                              >{ memos.name }
+                              </option>)) }
                         </select>
                       </div>
                       <div>
                         <label>Color: </label>
                         <select
                             className="bg-slate-50 my-2 border mx-2 px-2 py-1 border-black rounded"
-                            value={ color }
-                            onChange={ (e) => setColor(e.target.value) }
+                            value={ colorCode }
+                            onChange={ (e) => setColorCode(e.target.value) }
                         >
-                        { addColors }
+                        <option>----</option>
+                        { options?.colors.map((colores, index) => (
+                            <option
+                              key={index}
+                              value={ colores.code }
+                            >{ colores.name }
+                            </option>)) }
                         </select>
                       </div>
                     </div>
                     <div className="my-4 flex justify-center">
-                      <input
-                        type="submit"
-                        value="Añadir a la cesta"
-                        className="bg-green-500 cursor-pointer text-white px-2 py-1 hover:bg-green-700 transition-colors rounded font-bold uppercase"
-                      />
+                      { chargingCar
+                        ? <Charging />
+                        : <button type="submit" className="bg-green-500 cursor-pointer text-white px-2 py-1 hover:bg-green-700 transition-colors rounded font-bold uppercase">Añadir a la cesta</button>
+                    }
                     </div>
                   </form>
                 </div>

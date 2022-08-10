@@ -8,6 +8,9 @@ const ClientProvider = ({ children }) => {
   // Spinner
   const [charging, setCharging] = useState(false)
 
+  // Spinner Car
+  const [chargingCar, setChargingCar] = useState(false)
+
   // breadcrumbs
   const [home, setHome] = useState(true)
   const [product, setProduct] = useState(false)
@@ -25,11 +28,14 @@ const ClientProvider = ({ children }) => {
   const [viewDetails, setViewDetails] = useState(false)
 
   // State de selectores Colores y Capacidad
-  const [color, setColor] = useState({})
-  const [memory, setMemory] = useState({})
+  const [colorCode, setColorCode] = useState('')
+  const [storageCode, setStorageCode] = useState('')
+  // pendiente llenar valores desde details
+  const [colDefault, setColDefault] = useState('')
+  const [memoDefault, setMemoDefault] = useState('')
 
   // Carrito
-  // const [contCar, setContCar] = useState([])
+  const [contCar, setContCar] = useState([])
 
   // Ubicación URL
   const location = useLocation()
@@ -70,16 +76,24 @@ const ClientProvider = ({ children }) => {
     setCharging(false)
   }
 
+  // Mostrando y ocultando menú de mas informacion en DetailsProduct
   const handleDescription = () => {
     setViewDetails(!viewDetails)
   }
 
-  const addCart = (values) => {
+  // Enviamos los productos al carrito y esperamos la respuesta para sumarla al contador
+  const addCart = async (values) => {
     console.log(values)
-    /* setCharging(true)
-      const { data } = await axiosClient('cart')
-      setCharging(false)
-      console.log(data) */
+    setChargingCar(true)
+    const { data } = await axiosClient.post('cart', values)
+    if (contCar > 0) {
+      setContCar(contCar + data.count)
+    } else {
+      setContCar(data.count)
+    }
+    setChargingCar(false)
+    setColorCode('')
+    setStorageCode('')
   }
 
   return (
@@ -87,6 +101,7 @@ const ClientProvider = ({ children }) => {
       value={{
         charging,
         setCharging,
+        chargingCar,
         viewDetails,
 
         home,
@@ -94,6 +109,7 @@ const ClientProvider = ({ children }) => {
         product,
         setProduct,
         details,
+        contCar,
 
         search,
         setSearch,
@@ -103,10 +119,14 @@ const ClientProvider = ({ children }) => {
         productDetail,
         handleDescription,
         addCart,
-        color,
-        setColor,
-        memory,
-        setMemory
+        colorCode,
+        setColorCode,
+        storageCode,
+        setStorageCode,
+        colDefault,
+        setColDefault,
+        memoDefault,
+        setMemoDefault
       }}
     >
       {children}

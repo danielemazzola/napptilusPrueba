@@ -3,7 +3,7 @@ import Products from '../components/Products'
 import Search from '../components/Search'
 import Charging from '../components/Charging'
 const ProductListPage = () => {
-  const { apiProducts, charging } = useClient()
+  const { apiProducts, charging, result } = useClient()
   return (
     <div className="w-full">
       <div className="flex flex-col-reverse sm:flex-row sm:justify-between mr-4 items-center">
@@ -23,7 +23,7 @@ const ProductListPage = () => {
         : (
         <>
           <div className="p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-            {apiProducts.map((products) => (
+            {result?.map((products) => (
                 <Products key={products.id} products={products} />
             ))}
           </div>

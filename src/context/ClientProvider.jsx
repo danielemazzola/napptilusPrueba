@@ -17,6 +17,7 @@ const ClientProvider = ({ children }) => {
 
   // Buscador
   const [search, setSearch] = useState('')
+  const [result, setResult] = useState([])
 
   // Almacenar información de la API en State
   const [apiProducts, setApiProducts] = useState([])
@@ -30,6 +31,7 @@ const ClientProvider = ({ children }) => {
   // State de selectores Colores y Capacidad
   const [colorCode, setColorCode] = useState('')
   const [storageCode, setStorageCode] = useState('')
+
   // pendiente llenar valores desde details
   const [colDefault, setColDefault] = useState('')
   const [memoDefault, setMemoDefault] = useState('')
@@ -52,11 +54,6 @@ const ClientProvider = ({ children }) => {
     }
   }, [actual, details])
 
-  useEffect(() => {
-    // Busqueda de productos en tiempo real
-    // console.log(search);
-  }, [search])
-
   // Consumiendo API - despliegue de productos
   useEffect(() => {
     const fetchData = async () => {
@@ -67,6 +64,17 @@ const ClientProvider = ({ children }) => {
     }
     fetchData()
   }, [])
+
+  // Busqueda de productos en tiempo real
+  useEffect(() => {
+    // condiciones de busqueda
+    if (!search) {
+      setResult(apiProducts)
+    } else {
+      const searching = apiProducts.filter((data) => data.brand.includes(search) || data.model.includes(search))
+      setResult(searching)
+    }
+  }, [search, apiProducts])
 
   // Filtrando el producto por ID para mostrar sus detalles
   const productDetail = async (id) => {
@@ -83,7 +91,6 @@ const ClientProvider = ({ children }) => {
 
   // Enviamos los productos al carrito y esperamos la respuesta para sumarla al contador
   const addCart = async (values) => {
-    console.log(values)
     setChargingCar(true)
     const { data } = await axiosClient.post('cart', values)
     if (contCar > 0) {
@@ -103,6 +110,7 @@ const ClientProvider = ({ children }) => {
         setCharging,
         chargingCar,
         viewDetails,
+        result,
 
         home,
         setHome,

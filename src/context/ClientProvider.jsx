@@ -71,7 +71,7 @@ const ClientProvider = ({ children }) => {
     if (!search) {
       setResult(apiProducts)
     } else {
-      const searching = apiProducts.filter((data) => data.brand.includes(search) || data.model.includes(search))
+      const searching = apiProducts.filter((data) => data.brand.toLowerCase().includes(search.toLowerCase()) || data.model.toLowerCase().includes(search.toLowerCase()))
       setResult(searching)
     }
   }, [search, apiProducts])

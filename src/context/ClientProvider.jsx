@@ -29,7 +29,7 @@ const ClientProvider = ({ children }) => {
   const [memory, setMemory] = useState({})
 
   // Carrito
-  const [contentCar, setContentCar] = useState([])
+  // const [contCar, setContCar] = useState([])
 
   // Ubicación URL
   const location = useLocation()
@@ -62,7 +62,7 @@ const ClientProvider = ({ children }) => {
     fetchData()
   }, [])
 
-  // Filtrando el producto por ID
+  // Filtrando el producto por ID para mostrar sus detalles
   const productDetail = async (id) => {
     setCharging(true)
     const { data } = await axiosClient(`product/${id}`)
@@ -72,6 +72,14 @@ const ClientProvider = ({ children }) => {
 
   const handleDescription = () => {
     setViewDetails(!viewDetails)
+  }
+
+  const addCart = (values) => {
+    console.log(values)
+    /* setCharging(true)
+      const { data } = await axiosClient('cart')
+      setCharging(false)
+      console.log(data) */
   }
 
   return (
@@ -94,6 +102,7 @@ const ClientProvider = ({ children }) => {
 
         productDetail,
         handleDescription,
+        addCart,
         color,
         setColor,
         memory,

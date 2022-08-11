@@ -73,4 +73,4 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 Tailwindcss
 
 ### LINT
-Buenas practicas
+Revisión de codigo

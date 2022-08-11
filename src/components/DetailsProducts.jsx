@@ -23,6 +23,7 @@ const DetailsProducts = ({ details }) => {
 
   const {
     chargingCar,
+    charging,
     viewDetails,
     handleDescription,
     colorCode,
@@ -45,6 +46,9 @@ const DetailsProducts = ({ details }) => {
 
   return (
     <div>
+    { charging
+      ? <Charging />
+      : (
       <div className="flex flex-col items-center sm:items-start sm:flex-row sm:justify-center mt-10">
       <div className="w-1/2 flex justify-center items-center">
         <img src={ imgUrl } alt={ chipset } className="object-cover w-56 sm:w-72" />
@@ -93,8 +97,8 @@ const DetailsProducts = ({ details }) => {
                     className="mx-5"
                     onSubmit={handleAddCart}
                   >
-                    <div className="flex">
-                      <div>
+                    <div className="flex flex-col justify-center">
+                      <div className="flex justify-between border-b-2 px-2 items-center">
                       <label>Capacidad: </label>
                         <select
                             className="bg-slate-50 my-2 border mx-2 px-2 py-1 border-black rounded"
@@ -110,7 +114,7 @@ const DetailsProducts = ({ details }) => {
                               </option>)) }
                         </select>
                       </div>
-                      <div>
+                      <div className="flex justify-between border-b-2 px-2 items-center">
                         <label>Color: </label>
                         <select
                             className="bg-slate-50 my-2 border mx-2 px-2 py-1 border-black rounded"
@@ -140,6 +144,7 @@ const DetailsProducts = ({ details }) => {
           </div>
         </div>
       </div>
+        )}
     </div>
   )
 }

@@ -45,6 +45,10 @@ const ClientProvider = ({ children }) => {
   const location = useLocation()
   const actual = location.pathname
 
+  // Variable Date global
+  const now = new Date().valueOf()
+  const exp = 160 * 60 * 1000
+
   // breadcrumbs
   useEffect(() => {
     if (actual === '/') {
@@ -62,16 +66,35 @@ const ClientProvider = ({ children }) => {
     const fetchData = async () => {
       setCharging(true)
       // Busqueda de LocalStorage de lista de productos
-      const consultLocalStorage = JSON.parse(localStorage.getItem('Products'))
+      const consultLocalStorage = await JSON.parse(localStorage.getItem('Products'))
       // Consultamos si existen productos en LocalStorage
       if (!consultLocalStorage) {
+        console.log('Nada en Storage')
         const { data } = await axiosClient('product')
         setApiProducts(data)
-        // Almacenamos en LocalStorage
+        // Almacenamos en LocalStorage lista de productos
         localStorage.setItem('Products', JSON.stringify(data))
-      } else {
-        // Consumimos el listado de productos desde LocalStorage
-        setApiProducts(consultLocalStorage)
+        // Almacenamos en LocalStorage hora de almacenaje de los productos
+        localStorage.setItem('Now', now)
+      } else if (consultLocalStorage) {
+        console.log('Storage lleno')
+        // Consultamos tiempo transcurrido desde la primera Cookie almacenada
+        const timeValidate = localStorage.getItem('Now')
+        console.log(now)
+        console.log(timeValidate)
+        // Validacion de tiempo transcurrido
+        if (now - timeValidate < exp) {
+          // Consumimos el listado de productos desde LocalStorage
+          setApiProducts(consultLocalStorage)
+          console.log('Dentro del tiempo estipulado')
+        } else {
+          // realizamos nueva validación del listado
+          const { data } = await axiosClient('product')
+          localStorage.removeItem('Now')
+          localStorage.setItem('Now', now)
+          setApiProducts(data)
+          console.log('Nueva Data')
+        }
       }
       setCharging(false)
     }
@@ -142,18 +165,17 @@ const ClientProvider = ({ children }) => {
 
   // Enviamos los productos al carrito y esperamos la respuesta para sumarla al contador
   const addCart = async (values) => {
-    setCharging(true)
+    setChargingCar(true)
     const { data } = await axiosClient.post('cart', values)
     try {
       setContCar([...contCar, data])
       localStorage.setItem('Car', JSON.stringify([...contCar, data]))
-      setChargingCar(false)
       setColorCode('')
       setStorageCode('')
     } catch (error) {
       alert(error.message)
     }
-    setCharging(false)
+    setChargingCar(false)
   }
 
   return (

@@ -69,7 +69,6 @@ const ClientProvider = ({ children }) => {
       const consultLocalStorage = await JSON.parse(localStorage.getItem('Products'))
       // Consultamos si existen productos en LocalStorage
       if (!consultLocalStorage) {
-        console.log('Nada en Storage')
         const { data } = await axiosClient('product')
         setApiProducts(data)
         // Almacenamos en LocalStorage lista de productos
@@ -77,23 +76,18 @@ const ClientProvider = ({ children }) => {
         // Almacenamos en LocalStorage hora de almacenaje de los productos
         localStorage.setItem('Now', now)
       } else if (consultLocalStorage) {
-        console.log('Storage lleno')
         // Consultamos tiempo transcurrido desde la primera Cookie almacenada
         const timeValidate = localStorage.getItem('Now')
-        console.log(now)
-        console.log(timeValidate)
         // Validacion de tiempo transcurrido
         if (now - timeValidate < exp) {
           // Consumimos el listado de productos desde LocalStorage
           setApiProducts(consultLocalStorage)
-          console.log('Dentro del tiempo estipulado')
         } else {
           // realizamos nueva validación del listado
           const { data } = await axiosClient('product')
           localStorage.removeItem('Now')
           localStorage.setItem('Now', now)
           setApiProducts(data)
-          console.log('Nueva Data')
         }
       }
       setCharging(false)

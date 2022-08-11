@@ -45,9 +45,9 @@ const ClientProvider = ({ children }) => {
   const location = useLocation()
   const actual = location.pathname
 
-  // Variable Date global
+  // Variable Date global + tiempo de expiracion
   const now = new Date().valueOf()
-  const exp = 160 * 60 * 1000
+  const exp = 60 * 60 * 1000
 
   // breadcrumbs
   useEffect(() => {

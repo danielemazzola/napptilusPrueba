@@ -127,6 +127,7 @@ const ClientProvider = ({ children }) => {
 
   // Consultando Storage de Car
   useEffect(() => {
+    setCharging(true)
     const CarStorage = () => {
       // Consultamos si existe en LocalStorage
       const list = JSON.parse(localStorage.getItem('Car'))
@@ -135,6 +136,7 @@ const ClientProvider = ({ children }) => {
         setContCar(list)
       }
     }
+    setCharging(false)
     CarStorage()
   }, [])
 
@@ -145,13 +147,13 @@ const ClientProvider = ({ children }) => {
     try {
       setContCar([...contCar, data])
       localStorage.setItem('Car', JSON.stringify([...contCar, data]))
-      setCharging(false)
       setChargingCar(false)
       setColorCode('')
       setStorageCode('')
     } catch (error) {
       alert(error.message)
     }
+    setCharging(false)
   }
 
   return (

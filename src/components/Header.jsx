@@ -2,9 +2,14 @@ import { Link } from 'react-router-dom'
 import useClient from '../hooks/useClient'
 import carrito from '../img/carrito.png'
 import carrito2 from '../img/carrito2.png'
+import Charging from '../components/Charging'
 
 const Header = () => {
-  const { home, product, details, contCar } = useClient()
+  const { home, product, details, contCar, charging } = useClient()
+
+  if (charging) {
+    <Charging />
+  }
 
   return (
     <header className="bg-slate-500 px-6 pt-4 w-full flex flex-col">

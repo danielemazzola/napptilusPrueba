@@ -24,6 +24,8 @@ const ClientProvider = ({ children }) => {
 
   // Almacenar un producto en el State
   const [details, setDetails] = useState({})
+  // Almacenar productos en el localStora
+  const [detailsStorage, setDetailsStorage] = useState([])
 
   // State para mostrar detalles de Productos
   const [viewDetails, setViewDetails] = useState(false)
@@ -43,6 +45,7 @@ const ClientProvider = ({ children }) => {
   const location = useLocation()
   const actual = location.pathname
 
+  // breadcrumbs
   useEffect(() => {
     if (actual === '/') {
       setHome(true)
@@ -58,8 +61,18 @@ const ClientProvider = ({ children }) => {
   useEffect(() => {
     const fetchData = async () => {
       setCharging(true)
-      const { data } = await axiosClient('product')
-      setApiProducts(data)
+      // Busqueda de LocalStorage de lista de productos
+      const consultLocalStorage = JSON.parse(localStorage.getItem('Products'))
+      // Consultamos si existen productos en LocalStorage
+      if (!consultLocalStorage) {
+        const { data } = await axiosClient('product')
+        setApiProducts(data)
+        // Almacenamos en LocalStorage
+        localStorage.setItem('Products', JSON.stringify(data))
+      } else {
+        // Consumimos el listado de productos desde LocalStorage
+        setApiProducts(consultLocalStorage)
+      }
       setCharging(false)
     }
     fetchData()
@@ -69,8 +82,10 @@ const ClientProvider = ({ children }) => {
   useEffect(() => {
     // condiciones de busqueda
     if (!search) {
+      // Si no existe caracter en input mostrará desde el State de apiProducts
       setResult(apiProducts)
     } else {
+      // Caso contrario filtramos y mostramos según criterio
       const searching = apiProducts.filter((data) => data.brand.toLowerCase().includes(search.toLowerCase()) || data.model.toLowerCase().includes(search.toLowerCase()))
       setResult(searching)
     }
@@ -79,8 +94,29 @@ const ClientProvider = ({ children }) => {
   // Filtrando el producto por ID para mostrar sus detalles
   const productDetail = async (id) => {
     setCharging(true)
-    const { data } = await axiosClient(`product/${id}`)
-    setDetails(data)
+    const existDetailsProduct = JSON.parse(localStorage.getItem('DetailsProduct'))
+    // Consultamos si existe productos en LocalStorage con la const existDetailsProduct
+    if (existDetailsProduct) {
+      // Consultamos si existe el 'id' del producto con el 'id' de prop recibido y filtramos
+      const detectedProduct = existDetailsProduct?.map((pro) => pro).filter((pro) => pro.id === id && pro)
+      if (detectedProduct.length > 0) {
+        // Si existe producto, lo consumimos
+        setDetails(detectedProduct[0])
+      } else {
+        // No existe, lo consumismos desde la API
+        const { data } = await axiosClient(`product/${id}`)
+        setDetails(data)
+        // Lo almacenamos el LocalStorage
+        setDetailsStorage([...detailsStorage, data])
+        localStorage.setItem('DetailsProduct', JSON.stringify([...detailsStorage, data]))
+      }
+    } else {
+      // En caso de que no exista en localStorage, consumimos la API y lo guardamos en cliente
+      const { data } = await axiosClient(`product/${id}`)
+      setDetails(data)
+      setDetailsStorage([...detailsStorage, data])
+      localStorage.setItem('DetailsProduct', JSON.stringify([...detailsStorage, data]))
+    }
     setCharging(false)
   }
 
@@ -89,18 +125,33 @@ const ClientProvider = ({ children }) => {
     setViewDetails(!viewDetails)
   }
 
+  // Consultando Storage de Car
+  useEffect(() => {
+    const CarStorage = () => {
+      // Consultamos si existe en LocalStorage
+      const list = JSON.parse(localStorage.getItem('Car'))
+      if (list) {
+        // En caso de existir, lo recuperamos
+        setContCar(list)
+      }
+    }
+    CarStorage()
+  }, [])
+
   // Enviamos los productos al carrito y esperamos la respuesta para sumarla al contador
   const addCart = async (values) => {
-    setChargingCar(true)
+    setCharging(true)
     const { data } = await axiosClient.post('cart', values)
-    if (contCar > 0) {
-      setContCar(contCar + data.count)
-    } else {
-      setContCar(data.count)
+    try {
+      setContCar([...contCar, data])
+      localStorage.setItem('Car', JSON.stringify([...contCar, data]))
+      setCharging(false)
+      setChargingCar(false)
+      setColorCode('')
+      setStorageCode('')
+    } catch (error) {
+      alert(error.message)
     }
-    setChargingCar(false)
-    setColorCode('')
-    setStorageCode('')
   }
 
   return (

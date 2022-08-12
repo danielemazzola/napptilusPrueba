@@ -1,4 +1,3 @@
-/* eslint-disable no-useless-return */
 import useClient from '../hooks/useClient'
 import Charging from '../components/Charging'
 import mas from '../img/mas.png'
@@ -37,10 +36,19 @@ const DetailsProducts = ({ details }) => {
   const handleAddCart = async (e) => {
     e.preventDefault()
     if ([id, colorCode, storageCode].includes('')) {
-      console.log('props vacias')
-      return
+      const colorCode = (document.getElementById('color').value)
+      const storageCode = (document.getElementById('storages').value)
+      try {
+        await addCart({ id, colorCode, storageCode })
+      } catch (error) {
+        alert('Ha ocurrido un problema')
+      }
     } else {
-      await addCart({ id, colorCode, storageCode })
+      try {
+        await addCart({ id, colorCode, storageCode })
+      } catch (error) {
+        alert('Ha ocurrido un problema de conexión prueba de nuevo.')
+      }
     }
   }
 
@@ -104,13 +112,13 @@ const DetailsProducts = ({ details }) => {
                             value={ storageCode }
                             onChange={ (e) => setStorageCode(e.target.value) }
                         >
-                        <option>----</option>
                         { options?.storages.map((memos, index) => (
                             <option
-                                key={index}
-                                value={ memos.code }
-                              >{ memos.name }
-                              </option>)) }
+                              id= "storages"
+                              key={index}
+                              value={ memos.code }
+                            >{ memos.name }
+                            </option>)) }
                         </select>
                       </div>
                       <div className="flex justify-between border-b-2 px-2 items-center">
@@ -120,9 +128,9 @@ const DetailsProducts = ({ details }) => {
                             value={ colorCode }
                             onChange={ (e) => setColorCode(e.target.value) }
                         >
-                        <option>----</option>
                         { options?.colors.map((colores, index) => (
                             <option
+                              id='color'
                               key={index}
                               value={ colores.code }
                             >{ colores.name }

@@ -33,9 +33,6 @@ const DetailsProducts = ({ details }) => {
     addCart
   } = useClient()
 
-  const x = price * 0.10
-  const firstPrice = parseInt(price) + x
-
   const handleAddCart = async (e) => {
     e.preventDefault()
     if ([id, colorCode, storageCode].includes('')) {
@@ -59,7 +56,6 @@ const DetailsProducts = ({ details }) => {
           <div className="flex flex-col mx-5">
             <p className="text-gray-600">Marca: <span className="font-bold">{ brand }</span></p>
             <p className="text-gray-600">Modelo: <span className="font-bold">{ chipset }</span></p>
-            <p className="text-gray-600">Antes: <span className="font-bold"><del>€{ firstPrice }</del></span></p>
             <p className="text-gray-600 mt-2 font-bold uppercase flex items-center px-2">Ahora: <span className="font-bold text-xl border-l-8 bg-green-500 p-1 text-white ml-2">€{ price }</span></p>
             <p className="text-rose-600 font-bold text-xs">10% Menos</p>
           </div>

@@ -18,6 +18,8 @@ const ClientProvider = ({ children }) => {
   // Buscador
   const [search, setSearch] = useState('')
   const [result, setResult] = useState([])
+  const [notExist, setNotExist] = useState(false)
+  const [msgError, setMSGError] = useState('')
 
   // Almacenar información de la API en State
   const [apiProducts, setApiProducts] = useState([])
@@ -45,9 +47,9 @@ const ClientProvider = ({ children }) => {
   const location = useLocation()
   const actual = location.pathname
 
-  // Variable Date global + tiempo de expiracion
+  // fecha + tiempo de expiracion cookies
   const now = new Date().valueOf()
-  const exp = 60 * 60 * 1000
+  const [exp, setExp] = useState(null)
 
   // breadcrumbs
   useEffect(() => {
@@ -67,6 +69,8 @@ const ClientProvider = ({ children }) => {
       setCharging(true)
       // Busqueda de LocalStorage de lista de productos
       const consultLocalStorage = await JSON.parse(localStorage.getItem('Products'))
+      // Asignamos valor de expiración
+      setExp(60 * 60 * 1000)
       // Consultamos si existen productos en LocalStorage
       if (!consultLocalStorage) {
         const { data } = await axiosClient('product')
@@ -95,49 +99,80 @@ const ClientProvider = ({ children }) => {
     fetchData()
   }, [])
 
+  // Filtrando el producto por ID para mostrar sus detalles
+  const productDetail = async (id) => {
+    setCharging(true)
+    // Asignamos valor de validación con la API detalles de productos
+    setExp(20000)
+    // Consultamos si existe productos en LocalStorage con la const existDetailsProduct
+    const existDetailsProduct = JSON.parse(localStorage.getItem('DetailsProduct'))
+    // Validamos fecha de expiracion global de las cookies
+    const timeValidate = localStorage.getItem('Now')
+    if (existDetailsProduct) {
+      // Consultamos caducidad de la cookie
+      if (now - timeValidate < exp) {
+        // Consumimos el listado de productos desde LocalStorage
+        const detectedProduct = existDetailsProduct?.map((product) => product).filter((product) => product.id === id && product)
+        // Consultamos si existe el 'id' del producto con el 'id' del prop recibido y filtramos desde el Storage
+        if (detectedProduct.length > 0) {
+          // Si existe producto, lo consumimos desde Storage
+          setDetails(detectedProduct[0])
+        } else {
+          // No existe, lo consumismos desde la API
+          const { data } = await axiosClient(`product/${id}`)
+          setDetails(data)
+          // Lo almacenamos el LocalStorage
+          setDetailsStorage([...detailsStorage, data])
+          localStorage.setItem('DetailsProduct', JSON.stringify([...detailsStorage, data]))
+        }
+      } else {
+        // time expirado
+        const idsProductsStorage = existDetailsProduct.map((prodIds) => prodIds.id)
+        // Bucle para nueva validacion de cada id con API
+        localStorage.removeItem('Now')
+        for (let index = 0; index < idsProductsStorage.length; index++) {
+          const consumoApi = async () => {
+            const { data } = await axiosClient(`product/${idsProductsStorage[index]}`)
+            setDetails(data)
+            setDetailsStorage([...detailsStorage, data])
+            localStorage.setItem('DetailsProduct', JSON.stringify([...detailsStorage, data]))
+          }
+          consumoApi()
+        }
+        localStorage.setItem('Now', now)
+      }
+    } else {
+      const { data } = await axiosClient(`product/${id}`)
+      setDetails(data)
+      // Lo almacenamos el LocalStorage
+      setDetailsStorage([...detailsStorage, data])
+      localStorage.setItem('DetailsProduct', JSON.stringify([...detailsStorage, data]))
+      localStorage.removeItem('Now')
+      localStorage.setItem('Now', now)
+    }
+    setCharging(false)
+  }
+
   // Busqueda de productos en tiempo real
   useEffect(() => {
     // condiciones de busqueda
+    setNotExist(false)
     if (!search) {
       // Si no existe caracter en input mostrará desde el State de apiProducts
       setResult(apiProducts)
     } else {
       // Caso contrario filtramos y mostramos según criterio
       const searching = apiProducts.filter((data) => data.brand.toLowerCase().includes(search.toLowerCase()) || data.model.toLowerCase().includes(search.toLowerCase()))
-      setResult(searching)
+      if (searching.length > 0) {
+        setResult(searching)
+      } else {
+        setNotExist(true)
+        setMSGError('El producto que buscas no existe, prueba con otro producto')
+      }
     }
   }, [search, apiProducts])
 
-  // Filtrando el producto por ID para mostrar sus detalles
-  const productDetail = async (id) => {
-    setCharging(true)
-    const existDetailsProduct = JSON.parse(localStorage.getItem('DetailsProduct'))
-    // Consultamos si existe productos en LocalStorage con la const existDetailsProduct
-    if (existDetailsProduct) {
-      // Consultamos si existe el 'id' del producto con el 'id' de prop recibido y filtramos
-      const detectedProduct = existDetailsProduct?.map((pro) => pro).filter((pro) => pro.id === id && pro)
-      if (detectedProduct.length > 0) {
-        // Si existe producto, lo consumimos
-        setDetails(detectedProduct[0])
-      } else {
-        // No existe, lo consumismos desde la API
-        const { data } = await axiosClient(`product/${id}`)
-        setDetails(data)
-        // Lo almacenamos el LocalStorage
-        setDetailsStorage([...detailsStorage, data])
-        localStorage.setItem('DetailsProduct', JSON.stringify([...detailsStorage, data]))
-      }
-    } else {
-      // En caso de que no exista en localStorage, consumimos la API y lo guardamos en cliente
-      const { data } = await axiosClient(`product/${id}`)
-      setDetails(data)
-      setDetailsStorage([...detailsStorage, data])
-      localStorage.setItem('DetailsProduct', JSON.stringify([...detailsStorage, data]))
-    }
-    setCharging(false)
-  }
-
-  // Mostrando y ocultando menú de mas informacion en DetailsProduct
+  // Mostrando y ocultando menú de más informacion en DetailsProduct
   const handleDescription = () => {
     setViewDetails(!viewDetails)
   }
@@ -190,6 +225,8 @@ const ClientProvider = ({ children }) => {
 
         search,
         setSearch,
+        notExist,
+        msgError,
 
         productDetail,
         handleDescription,

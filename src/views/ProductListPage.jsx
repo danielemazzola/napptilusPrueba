@@ -3,7 +3,7 @@ import Products from '../components/Products'
 import Search from '../components/Search'
 import Charging from '../components/Charging'
 const ProductListPage = () => {
-  const { charging, result } = useClient()
+  const { charging, result, msgError, notExist } = useClient()
   return (
     <div className="w-full">
       <div className="flex flex-col-reverse sm:flex-row sm:justify-between mr-4 items-center">
@@ -22,11 +22,14 @@ const ProductListPage = () => {
           )
         : (
         <>
-          <div className="p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        { notExist
+          ? <p className="font-bold text-center text-xl text-gray-500 transition-all my-10">{msgError}</p>
+          : <div className="p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {result?.map((products) => (
                 <Products key={products.id} products={products} />
             ))}
           </div>
+        }
         </>
           )}
     </div>

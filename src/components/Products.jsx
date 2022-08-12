@@ -24,7 +24,7 @@ const Products = ({ products }) => {
           <div className="my-3 flex justify-center">
             <Link
               to={`/product/${id}`}
-              className="uppercase text-lg bg-sky-400 py-2 w-full mx-5 sm:mx-0 rounded text-white font-bold text-center hover:bg-sky-600"
+              className="uppercase text-lg py-2 w-full mx-5 sm:mx-0 rounded text-sky-400 font-bold text-center border-2 border-sky-400 hover:border-sky-600 hover:text-sky-600 transition-colors"
             >
             más detalles</Link>
           </div>

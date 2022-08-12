@@ -12,7 +12,7 @@ const Header = () => {
   }
 
   return (
-    <header className="bg-slate-500 px-6 pt-4 w-full flex flex-col">
+    <header className="bg-sky-600 px-6 pt-4 w-full flex flex-col">
       <div className="flex justify-between">
         <div>
           <Link to="./">

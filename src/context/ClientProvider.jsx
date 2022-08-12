@@ -72,14 +72,14 @@ const ClientProvider = ({ children }) => {
       // Asignamos valor de expiración
       setExp(60 * 60 * 1000)
       // Consultamos si existen productos en LocalStorage
-      if (!consultLocalStorage) {
+      if (consultLocalStorage.length < 0) {
         const { data } = await axiosClient('product')
         setApiProducts(data)
         // Almacenamos en LocalStorage lista de productos
         localStorage.setItem('Products', JSON.stringify(data))
         // Almacenamos en LocalStorage hora de almacenaje de los productos
         localStorage.setItem('Now', now)
-      } else if (consultLocalStorage) {
+      } else if (consultLocalStorage.length > 0) {
         // Consultamos tiempo transcurrido desde la primera Cookie almacenada
         const timeValidate = localStorage.getItem('Now')
         // Validacion de tiempo transcurrido
@@ -108,7 +108,7 @@ const ClientProvider = ({ children }) => {
     const existDetailsProduct = JSON.parse(localStorage.getItem('DetailsProduct'))
     // Validamos fecha de expiracion global de las cookies
     const timeValidate = localStorage.getItem('Now')
-    if (existDetailsProduct) {
+    if (existDetailsProduct.length > 0) {
       // Consultamos caducidad de la cookie
       if (now - timeValidate < exp) {
         // Consumimos el listado de productos desde LocalStorage
@@ -229,6 +229,7 @@ const ClientProvider = ({ children }) => {
         msgError,
 
         productDetail,
+        detailsStorage,
         handleDescription,
         addCart,
         colorCode,

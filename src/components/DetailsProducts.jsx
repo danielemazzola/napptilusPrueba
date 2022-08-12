@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-return */
 import useClient from '../hooks/useClient'
 import Charging from '../components/Charging'
 import mas from '../img/mas.png'
@@ -36,9 +37,11 @@ const DetailsProducts = ({ details }) => {
   const handleAddCart = async (e) => {
     e.preventDefault()
     if ([id, colorCode, storageCode].includes('')) {
+      console.log('props vacias')
       return
+    } else {
+      await addCart({ id, colorCode, storageCode })
     }
-    await addCart({ id, colorCode, storageCode })
   }
 
   return (
@@ -46,7 +49,7 @@ const DetailsProducts = ({ details }) => {
     { charging
       ? <Charging />
       : (
-      <div className="flex flex-col items-center sm:items-start sm:flex-row sm:justify-center mt-10">
+      <div className="flex flex-col items-center md:items-start md:mx-2 md:flex-row sm:justify-center mt-10">
       <div className="w-1/2 flex justify-center items-center">
         <img src={ imgUrl } alt={ chipset } className="object-cover w-56 sm:w-72" />
       </div>

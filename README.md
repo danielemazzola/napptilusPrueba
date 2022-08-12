@@ -75,6 +75,9 @@ Tailwindcss
 ### LINT
 Revisión de codigo
 
+### SweetAlert
+npm install --save sweetalert
+
 ### Almacenaje en LocalStorage
 ### ListProducts
 A tener en cuenta que el State [exp, setExp] almacena la caducidad mencionada por el cliente y la const now devuelve la data actual.

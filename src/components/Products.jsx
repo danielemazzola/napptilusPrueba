@@ -13,7 +13,7 @@ const Products = ({ products }) => {
           <div className="mx-5 sm:mx-0 mt-5 flex justify-between">
             <div className="border-l-8 p-2">
               <p className="font-bold uppercase">{brand}</p>
-              <p className="font-bold uppercase text-sm mt-2">Modelo</p>
+              <p className="capitalize text-xs mt-2 text-gray-500">Modelo:</p>
               <p className="text-xs capitalize">{model}</p>
             </div>
             <div className="bg-gray-100 p-2 rounded-l-lg flex flex-col justify-center items-center">

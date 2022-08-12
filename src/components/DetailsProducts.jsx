@@ -2,6 +2,7 @@ import useClient from '../hooks/useClient'
 import Charging from '../components/Charging'
 import mas from '../img/mas.png'
 import menos from '../img/menos.png'
+import swal from 'sweetalert'
 
 const DetailsProducts = ({ details }) => {
   const {
@@ -40,12 +41,20 @@ const DetailsProducts = ({ details }) => {
       const storageCode = (document.getElementById('storages').value)
       try {
         await addCart({ id, colorCode, storageCode })
+        swal({
+          text: 'Producto agregado correctamente',
+          icon: 'success'
+        })
       } catch (error) {
         alert('Ha ocurrido un problema')
       }
     } else {
       try {
         await addCart({ id, colorCode, storageCode })
+        swal({
+          text: 'Producto agregado correctamente',
+          icon: 'success'
+        })
       } catch (error) {
         alert('Ha ocurrido un problema de conexión prueba de nuevo.')
       }
@@ -141,7 +150,10 @@ const DetailsProducts = ({ details }) => {
                     <div className="my-4 flex justify-center">
                       { chargingCar
                         ? <Charging />
-                        : <button type="submit" className="bg-green-500 cursor-pointer text-white px-2 py-1 hover:bg-green-700 transition-colors rounded font-bold uppercase">Añadir a la cesta</button>
+                        : (
+                          <div className="">
+                          <button type="submit" className="bg-green-500 cursor-pointer text-white px-2 py-1 hover:bg-green-700 transition-colors rounded font-bold uppercase">Añadir a la cesta</button>
+                          </div>)
                     }
                     </div>
                   </form>

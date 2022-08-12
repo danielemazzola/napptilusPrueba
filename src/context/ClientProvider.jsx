@@ -167,7 +167,7 @@ const ClientProvider = ({ children }) => {
         setResult(searching)
       } else {
         setNotExist(true)
-        setMSGError('El producto que buscas no existe, prueba con otro producto')
+        setMSGError('El producto que buscas no existe :(')
       }
     }
   }, [search, apiProducts])

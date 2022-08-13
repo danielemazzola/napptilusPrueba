@@ -103,7 +103,7 @@ const ClientProvider = ({ children }) => {
   const productDetail = async (id) => {
     setCharging(true)
     // Asignamos valor de validación con la API detalles de productos
-    setExp(20000)
+    setExp(60 * 60 * 1000)
     // Consultamos si existe productos en LocalStorage con la const existDetailsProduct
     const existDetailsProduct = JSON.parse(localStorage.getItem('DetailsProduct'))
     // Validamos fecha de expiracion global de las cookies

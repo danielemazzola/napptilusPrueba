@@ -1,11 +1,17 @@
 import { Link } from 'react-router-dom'
+import useClient from '../hooks/useClient'
+import Charging from './Charging'
 
 const Products = ({ products }) => {
   const { id, imgUrl, model, price, brand } = products
 
+  const { charging } = useClient()
+
   return (
     <div className="flex justify-center shadow-lg m-2 p-5 items-center">
-      <div className="flex flex-col w-full">
+    { charging
+      ? <Charging />
+      : <div className="flex flex-col w-full">
         <div className="flex justify-center px-2 py-3 rounded-lg">
           <img src={imgUrl} alt={model} className="w-32 bg-cover" />
         </div>
@@ -30,6 +36,7 @@ const Products = ({ products }) => {
           </div>
         </div>
       </div>
+    }
     </div>
   )
 }

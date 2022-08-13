@@ -75,6 +75,9 @@ Tailwindcss
 ### LINT
 Revisión de codigo
 
+### AXIOS
+Consumo de la API
+
 ### SweetAlert
 npm install --save sweetalert
 

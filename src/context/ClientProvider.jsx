@@ -108,7 +108,7 @@ const ClientProvider = ({ children }) => {
     const existDetailsProduct = JSON.parse(localStorage.getItem('DetailsProduct'))
     // Validamos fecha de expiracion global de las cookies
     const timeValidate = localStorage.getItem('Now')
-    if (existDetailsProduct) {
+    if (existDetailsProduct || existDetailsProduct.length > 0) {
       // Consultamos caducidad de la cookie
       if (now - timeValidate < exp) {
         // Consumimos el listado de productos desde LocalStorage

@@ -26,9 +26,9 @@ const Header = () => {
         <div>
 
           {contCar <= 0
-            ? <img src={carrito} className="w-8" />
+            ? <img src={carrito} alt='Cesta de compra' className="w-8" />
             : <>
-            <img src={carrito2} className="w-8" />
+            <img src={carrito2} alt='Cesta de compra' className="w-8" />
               <div className="text-center font-bold text-white">{ contCar.length }</div>
             </>
             }

@@ -14,6 +14,7 @@ const ClientProvider = ({ children }) => {
   // breadcrumbs
   const [home, setHome] = useState(true)
   const [product, setProduct] = useState(false)
+  const [carResult, setCarResult] = useState(false)
 
   // Buscador
   const [search, setSearch] = useState('')
@@ -56,10 +57,17 @@ const ClientProvider = ({ children }) => {
     if (actual === '/') {
       setHome(true)
       setProduct(false)
+      setCarResult(false)
     }
     if (actual === `/product/${details.id}`) {
       setHome(false)
       setProduct(true)
+      setCarResult(false)
+    }
+    if (actual === '/view-car-products') {
+      setHome(false)
+      setProduct(false)
+      setCarResult(true)
     }
   }, [actual, details])
 
@@ -197,8 +205,9 @@ const ClientProvider = ({ children }) => {
     setChargingCar(true)
     const { data } = await axiosClient.post('cart', values)
     try {
-      setContCar([...contCar, data])
-      localStorage.setItem('Car', JSON.stringify([...contCar, data]))
+      const newArrayPro = { data, values }
+      setContCar([...contCar, newArrayPro])
+      localStorage.setItem('Car', JSON.stringify([...contCar, newArrayPro]))
       setColorCode('')
       setStorageCode('')
     } catch (error) {
@@ -219,6 +228,7 @@ const ClientProvider = ({ children }) => {
         home,
         setHome,
         product,
+        carResult,
         setProduct,
         details,
         contCar,

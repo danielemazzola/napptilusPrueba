@@ -5,8 +5,7 @@ import carrito2 from '../img/carrito2.png'
 import Charging from '../components/Charging'
 
 const Header = () => {
-  const { home, product, details, contCar, charging } = useClient()
-
+  const { home, product, carResult, details, contCar, charging, handleCart } = useClient()
   if (charging) {
     <Charging />
   }
@@ -23,14 +22,16 @@ const Header = () => {
             </div>
           </Link>
         </div>
-        <div>
+        <div className="transition-all">
 
           {contCar <= 0
-            ? <img src={carrito} alt='Cesta de compra' className="w-8" />
-            : <>
-            <img src={carrito2} alt='Cesta de compra' className="w-8" />
-              <div className="text-center font-bold text-white">{ contCar.length }</div>
-            </>
+            ? <img src={carrito} alt='Cesta de compra p-2' className="w-8" />
+            : <div className="bg-white p-2 rounded-full">
+              <Link to={'view-car-products'}>
+                <p className="fixed text-center font-bold mt-5 bg-green-500 px-2 ml-7 rounded-full text-white">{ contCar.length }</p>
+                <img src={carrito2} alt='Cesta de compra' className="w-8 cursor-pointer" onClick={ handleCart } />
+              </Link>
+            </div>
             }
 
         </div>
@@ -46,6 +47,18 @@ const Header = () => {
             } `}
           >
             Home
+          </Link>
+        </div>
+        <div className="mx-2">
+          <Link
+            to="./view-car-products"
+            className={`${
+              carResult
+                ? 'bg-slate-800 py-2 px-1 text-white rounded-lg'
+                : 'text-white hover:bg-gray-300 hover:text-slate-500 hover:py-2 px-1 rounded-lg'
+            } `}
+          >
+            Cesta de compras
           </Link>
         </div>
           { details.id && (

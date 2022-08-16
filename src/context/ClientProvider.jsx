@@ -113,9 +113,9 @@ const ClientProvider = ({ children }) => {
     // Asignamos valor de validación con la API detalles de productos
     setExp(60 * 60 * 1000)
     // Consultamos si existe productos en LocalStorage con la const existDetailsProduct
-    const existDetailsProduct = JSON.parse(localStorage.getItem('DetailsProduct'))
+    const existDetailsProduct = await JSON.parse(localStorage.getItem('DetailsProduct'))
     // Validamos fecha de expiracion global de las cookies
-    const timeValidate = localStorage.getItem('Now')
+    const timeValidate = await localStorage.getItem('Now')
     if (existDetailsProduct) {
       // Consultamos caducidad de la cookie
       if (now - timeValidate < exp) {
@@ -131,13 +131,13 @@ const ClientProvider = ({ children }) => {
           setDetails(data)
           // Lo almacenamos el LocalStorage
           setDetailsStorage([...detailsStorage, data])
-          localStorage.setItem('DetailsProduct', JSON.stringify([...detailsStorage, data]))
+          await localStorage.setItem('DetailsProduct', JSON.stringify([...detailsStorage, data]))
         }
       } else {
         // time expirado
         const idsProductsStorage = existDetailsProduct.map((prodIds) => prodIds.id)
         // Bucle para nueva validacion de cada id con API
-        localStorage.removeItem('Now')
+        await localStorage.removeItem('Now')
         for (let index = 0; index < idsProductsStorage.length; index++) {
           const consumoApi = async () => {
             const { data } = await axiosClient(`product/${idsProductsStorage[index]}`)
@@ -147,16 +147,16 @@ const ClientProvider = ({ children }) => {
           }
           consumoApi()
         }
-        localStorage.setItem('Now', now)
+        await localStorage.setItem('Now', now)
       }
     } else {
       const { data } = await axiosClient(`product/${id}`)
       setDetails(data)
       // Lo almacenamos el LocalStorage
       setDetailsStorage([...detailsStorage, data])
-      localStorage.setItem('DetailsProduct', JSON.stringify([...detailsStorage, data]))
-      localStorage.removeItem('Now')
-      localStorage.setItem('Now', now)
+      await localStorage.setItem('DetailsProduct', JSON.stringify([...detailsStorage, data]))
+      await localStorage.removeItem('Now')
+      await localStorage.setItem('Now', now)
     }
     setCharging(false)
   }
@@ -188,9 +188,9 @@ const ClientProvider = ({ children }) => {
   // Consultando Storage de Car
   useEffect(() => {
     setCharging(true)
-    const CarStorage = () => {
+    const CarStorage = async () => {
       // Consultamos si existe en LocalStorage
-      const list = JSON.parse(localStorage.getItem('Car'))
+      const list = await JSON.parse(localStorage.getItem('Car'))
       if (list) {
         // En caso de existir, lo recuperamos
         setContCar(list)
@@ -207,7 +207,7 @@ const ClientProvider = ({ children }) => {
     try {
       const newArrayPro = { data, values }
       setContCar([...contCar, newArrayPro])
-      localStorage.setItem('Car', JSON.stringify([...contCar, newArrayPro]))
+      await localStorage.setItem('Car', JSON.stringify([...contCar, newArrayPro]))
       setColorCode('')
       setStorageCode('')
     } catch (error) {

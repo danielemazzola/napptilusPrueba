@@ -36,25 +36,25 @@ const Header = () => {
 
         </div>
       </div>
-      <nav className="flex justify-center font-bold mt-5 transition-all">
-        <div className="mx-2">
+      <nav className="flex justify-around items-center font-bold mt-5 transition-all text-sm sm:text-lg">
+        <div className={`w-1/3 ${home && 'bg-slate-800'} text-center py-1 rounded-lg`}>
           <Link
             to="./"
             className={`${
               home
-                ? 'bg-slate-800 py-2 px-1 text-white rounded-lg'
+                ? 'text-white'
                 : 'text-white hover:bg-gray-300 hover:text-slate-500 hover:py-2 px-1 rounded-lg'
             } `}
           >
             Home
           </Link>
         </div>
-        <div className="mx-2">
+        <div className={`w-1/3 ${carResult && 'bg-slate-800'} text-center py-1 rounded-lg`}>
           <Link
             to="./view-car-products"
             className={`${
               carResult
-                ? 'bg-slate-800 py-2 px-1 text-white rounded-lg'
+                ? 'text-white px-1 flex justify-center'
                 : 'text-white hover:bg-gray-300 hover:text-slate-500 hover:py-2 px-1 rounded-lg'
             } `}
           >
@@ -62,19 +62,16 @@ const Header = () => {
           </Link>
         </div>
           { details.id && (
-            <>
-              <div className="text-white">|</div>
-              <div className="mx-2">
+              <div className={`w-1/3 ${product && 'bg-slate-800'} text-center py-1 rounded-lg`}>
                 <Link
                   to={`/product/${details.id}`}
                   className={`${
-                    product ? 'bg-slate-800 py-2 px-1 text-white rounded-lg' : 'text-white hover:bg-gray-300 hover:text-slate-500 hover:py-2 px-1 rounded-lg'
+                    product ? 'text-white' : 'text-white hover:bg-gray-300 hover:text-slate-500 hover:py-2 px-1 rounded-lg'
                   } `}
                 >
                 { details && 'Detalles de producto' }
                 </Link>
               </div>
-            </>
           ) }
       </nav>
     </header>

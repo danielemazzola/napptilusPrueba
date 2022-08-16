@@ -70,14 +70,13 @@ const DetailsProducts = ({ details }) => {
       <div className="w-1/2 flex justify-center items-center">
         <img src={ imgUrl } alt={ chipset } className="object-cover w-56 sm:w-72" />
       </div>
-      <div className="">
-        <div className="sm:mx-10 border-2 py-3 px-3 sm:px-10 rounded-xl">
+      <div className="w-full">
+        <div className="sm:mx-10 md:border-2 p-3 sm:px-10 rounded-xl">
           <h5 className="uppercase text-xl text-gray-600 my-2 font-bold">Descripción</h5>
           <div className="flex flex-col mx-5">
             <p className="text-gray-600">Marca: <span className="font-bold">{ brand }</span></p>
             <p className="text-gray-600">Modelo: <span className="font-bold">{ chipset }</span></p>
             <p className="text-gray-600 mt-2 font-bold uppercase flex items-center px-2">Ahora: <span className="font-bold text-xl border-l-8 bg-green-500 p-1 text-white ml-2">€{ price }</span></p>
-            <p className="text-rose-600 font-bold text-xs">10% Menos</p>
           </div>
           <div className="flex justify-around items-center my-3">
             <p className="font-bold uppercase text-sky-600">Más información</p>
@@ -89,7 +88,7 @@ const DetailsProducts = ({ details }) => {
                 </div>
           </div>
           { viewDetails && (
-            <div className="w-96">
+            <div className="w-full">
                 <section className="bg-gray-50 rounded-lg p-2 ">
                   <p className="text-gray-600 my-1"><em>CPU: </em><span className="font-bold">{ cpu }</span></p>
                   <p className="text-gray-600 my-1"><em>RAM: </em><span className="font-bold">{ ram }</span></p>
@@ -103,11 +102,11 @@ const DetailsProducts = ({ details }) => {
             </div>
           )}
           </div>
-          <div className="w-full mb-5">
-            <div className="flex flex-col items-center sm:items-start sm:flex-row sm:justify-center mt-10">
+          <div className="mb-5">
+            <div className="flex flex-col mt-10">
             <div className="w-1/2 flex justify-center items-center"></div>
-              <div className="sm:mx-10 border-2 py-3 px-3 sm:px-10 rounded-xl">
-                <div className="w-96">
+              <div className="sm:mx-10 md:border-2 py-3 px-3 sm:px-10 rounded-xl">
+                <div className="">
                   <h5 className="uppercase text-xl text-gray-600 my-2 font-bold">Elige tus preferencias</h5>
                   <form
                     className="mx-5"
@@ -147,12 +146,14 @@ const DetailsProducts = ({ details }) => {
                         </select>
                       </div>
                     </div>
-                    <div className="my-4 flex justify-center">
+                    <div className="my-4 text-center w-full">
                       { chargingCar
-                        ? <Charging />
+                        ? <div className="my-4 flex justify-center">
+                          <Charging />
+                        </div>
                         : (
                           <div className="">
-                          <button type="submit" className="bg-green-500 cursor-pointer text-white px-2 py-1 hover:bg-green-700 transition-colors rounded font-bold uppercase">Añadir a la cesta</button>
+                          <button type="submit" className="w-1/2 bg-green-500 cursor-pointer text-white px-2 py-1 hover:bg-green-700 transition-colors rounded font-bold uppercase">Añadir a la cesta</button>
                           </div>)
                     }
                     </div>

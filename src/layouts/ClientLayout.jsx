@@ -8,7 +8,7 @@ const ClientLayout = () => {
         <Header />
       </div>
       <main className="flex">
-        <div className="w-full mt-32">
+        <div className="w-full mt-40">
           <Outlet />
         </div>
       </main>

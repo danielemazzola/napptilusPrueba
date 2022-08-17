@@ -6,7 +6,7 @@ const Search = () => {
   return (
     <Fragment>
       <input
-        className="rounded-sm px-1 shadow-lg py-2"
+        className="rounded-sm px-1 shadow-lg py-2 mb-10"
         placeholder="Buscador"
         type="text"
         value={search}

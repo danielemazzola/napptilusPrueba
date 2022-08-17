@@ -24,7 +24,7 @@ const Products = ({ products }) => {
             </div>
             <div className="bg-gray-100 p-2 rounded-l-lg flex flex-col justify-center items-center">
               <p className="capitalize font-normal underline">precio</p>
-              <span className="bg-green-500 rounded w-full font-bold text-white">{ price }€</span>
+              <span className="bg-green-500 rounded w-full font-bold text-white text-center">{ price }€</span>
             </div>
           </div>
           <div className="my-3 flex justify-center">
